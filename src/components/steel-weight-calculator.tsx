@@ -41,10 +41,8 @@ export function SteelWeightCalculator() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 space-y-4 bg-card rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center">
-        Steel Weight Calculator
-      </h2>
+    <div className="w-full p-3 space-y-3 bg-card rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold text-center">Steel Weight Calculator</h2>
 
       <div className="space-y-2">
         <Label htmlFor="section-type">Section Type</Label>
