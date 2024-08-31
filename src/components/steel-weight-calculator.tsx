@@ -1,41 +1,57 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 export function SteelWeightCalculator() {
-  const [sectionType, setSectionType] = useState<"flat" | "round">("flat")
-  const [width, setWidth] = useState("")
-  const [height, setHeight] = useState("")
-  const [diameter, setDiameter] = useState("")
-  const [length, setLength] = useState("")
-  const [weight, setWeight] = useState<number | null>(null)
+  const [sectionType, setSectionType] = useState<"flat" | "round">("flat");
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [diameter, setDiameter] = useState("");
+  const [length, setLength] = useState("");
+  const [weight, setWeight] = useState<number | null>(null);
 
   const calculateWeight = () => {
-    const steelDensity = 7850 // kg/m^3
-    let volume: number
+    const steelDensity = 7850; // kg/m^3
+    let volume: number;
 
     if (sectionType === "flat") {
-      volume = (parseFloat(width) / 1000) * (parseFloat(height) / 1000) * (parseFloat(length) / 1000)
+      volume =
+        (parseFloat(width) / 1000) *
+        (parseFloat(height) / 1000) *
+        (parseFloat(length) / 1000);
     } else {
-      volume = Math.PI * Math.pow(parseFloat(diameter) / 2000, 2) * (parseFloat(length) / 1000)
+      volume =
+        Math.PI *
+        Math.pow(parseFloat(diameter) / 2000, 2) *
+        (parseFloat(length) / 1000);
     }
 
-    const calculatedWeight = volume * steelDensity
-    setWeight(calculatedWeight)
-  }
+    const calculatedWeight = volume * steelDensity;
+    setWeight(calculatedWeight);
+  };
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-6 bg-card rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center">Steel Weight Calculator</h2>
-      
+    <div className="w-full max-w-md mx-auto p-4 space-y-4 bg-card rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-center">
+        Steel Weight Calculator
+      </h2>
+
       <div className="space-y-2">
         <Label htmlFor="section-type">Section Type</Label>
-        <Select onValueChange={(value: "flat" | "round") => setSectionType(value)}>
-          <SelectTrigger id="section-type">
+        <Select
+          onValueChange={(value: "flat" | "round") => setSectionType(value)}
+        >
+          <SelectTrigger id="section-type" className="w-full">
             <SelectValue placeholder="Select section type" />
           </SelectTrigger>
           <SelectContent>
@@ -46,7 +62,7 @@ export function SteelWeightCalculator() {
       </div>
 
       {sectionType === "flat" ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="width">Width (mm)</Label>
             <Input
@@ -97,10 +113,12 @@ export function SteelWeightCalculator() {
       </Button>
 
       {weight !== null && (
-        <div className="text-center">
-          <p className="text-lg font-semibold">Weight: {weight.toFixed(2)} kg</p>
+        <div className="text-center p-4 bg-secondary rounded-lg">
+          <p className="text-lg font-semibold">
+            Weight: {weight.toFixed(2)} kg
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }
