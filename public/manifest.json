@@ -1,7 +1,7 @@
 {
-  "name": "Steel Weight Calculator",
+  "name": "Steel Calculator",
   "short_name": "Steel Calc",
-  "description": "Calculate the weight of steel sections",
+  "description": "Calculate the weight/length of steel sections",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

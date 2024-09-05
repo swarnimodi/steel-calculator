@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Steel Weight Calculator",
-  description: "Calculate the weight of steel sections",
+  title: "Steel Calculator",
+  description: "Calculate the weight/length of steel sections",
   manifest: "/manifest.json",
   themeColor: "#000000",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
