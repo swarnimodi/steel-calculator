@@ -12,7 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-export function SteelWeightCalculator() {
+interface SteelWeightCalculatorProps {
+  showToast: (
+    title: string,
+    description: string,
+    variant: "default" | "destructive"
+  ) => void;
+}
+
+export function SteelWeightCalculator({
+  showToast,
+}: SteelWeightCalculatorProps) {
   const [sectionType, setSectionType] = useState<"flat" | "round">("flat");
   const [calculationType, setCalculationType] = useState<"weight" | "length">(
     "weight"
@@ -24,28 +34,83 @@ export function SteelWeightCalculator() {
   const [weight, setWeight] = useState("");
   const [result, setResult] = useState<number | null>(null);
 
+  const clearInputs = () => {
+    setWidth("");
+    setHeight("");
+    setDiameter("");
+    setLength("");
+    setWeight("");
+    setResult(null);
+  };
+
+  const handleSectionTypeChange = (value: "flat" | "round") => {
+    setSectionType(value);
+    clearInputs();
+  };
+
+  const handleCalculationTypeChange = (value: "weight" | "length") => {
+    setCalculationType(value);
+    clearInputs();
+  };
+
   const calculate = () => {
     const steelDensity = 7850; // kg/m^3
-    let volume: number;
+    let crossSectionalArea: number;
+
+    // Input validation
+    if (
+      sectionType === "flat" &&
+      (!width ||
+        !height ||
+        isNaN(parseFloat(width)) ||
+        isNaN(parseFloat(height)))
+    ) {
+      showToast(
+        "Invalid Input",
+        "Please enter valid width and height.",
+        "destructive"
+      );
+      return;
+    }
+    if (sectionType === "round" && (!diameter || isNaN(parseFloat(diameter)))) {
+      showToast(
+        "Invalid Input",
+        "Please enter a valid diameter.",
+        "destructive"
+      );
+      return;
+    }
+    if (
+      calculationType === "weight" &&
+      (!length || isNaN(parseFloat(length)))
+    ) {
+      showToast("Invalid Input", "Please enter a valid length.", "destructive");
+      return;
+    }
+    if (
+      calculationType === "length" &&
+      (!weight || isNaN(parseFloat(weight)))
+    ) {
+      showToast("Invalid Input", "Please enter a valid weight.", "destructive");
+      return;
+    }
 
     if (sectionType === "flat") {
-      volume =
-        (parseFloat(width) / 1000) *
-        (parseFloat(height) / 1000) *
-        (parseFloat(length) / 1000);
+      crossSectionalArea =
+        (parseFloat(width) / 1000) * (parseFloat(height) / 1000);
     } else {
-      volume =
-        Math.PI *
-        Math.pow(parseFloat(diameter) / 2000, 2) *
-        (parseFloat(length) / 1000);
+      crossSectionalArea = Math.PI * Math.pow(parseFloat(diameter) / 2000, 2);
     }
 
     if (calculationType === "weight") {
+      const lengthInMeters = parseFloat(length) / 1000;
+      const volume = crossSectionalArea * lengthInMeters;
       const calculatedWeight = volume * steelDensity;
       setResult(calculatedWeight);
     } else {
+      const weightInKg = parseFloat(weight);
       const calculatedLength =
-        (parseFloat(weight) / (steelDensity * volume)) * 1000;
+        (weightInKg / (steelDensity * crossSectionalArea)) * 1000; // Convert back to mm
       setResult(calculatedLength);
     }
   };
@@ -56,10 +121,7 @@ export function SteelWeightCalculator() {
 
       <div className="space-y-2">
         <Label htmlFor="section-type">Section Type</Label>
-        <Select
-          onValueChange={(value: "flat" | "round") => setSectionType(value)}
-          defaultValue="flat"
-        >
+        <Select onValueChange={handleSectionTypeChange} defaultValue="flat">
           <SelectTrigger id="section-type" className="w-full">
             <SelectValue placeholder="Select section type" />
           </SelectTrigger>
@@ -109,9 +171,7 @@ export function SteelWeightCalculator() {
       <div className="space-y-2">
         <Label htmlFor="calculation-type">What do you want to calculate?</Label>
         <Select
-          onValueChange={(value: "weight" | "length") =>
-            setCalculationType(value)
-          }
+          onValueChange={handleCalculationTypeChange}
           defaultValue="weight"
         >
           <SelectTrigger id="calculation-type" className="w-full">
