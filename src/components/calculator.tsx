@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-interface SteelWeightCalculatorProps {
+interface CalculatorProps {
   showToast: (
     title: string,
     description: string,
@@ -20,9 +20,7 @@ interface SteelWeightCalculatorProps {
   ) => void;
 }
 
-export function SteelWeightCalculator({
-  showToast,
-}: SteelWeightCalculatorProps) {
+export function Calculator({ showToast }: CalculatorProps) {
   const [sectionType, setSectionType] = useState<"flat" | "round">("flat");
   const [calculationType, setCalculationType] = useState<"weight" | "length">(
     "weight"
