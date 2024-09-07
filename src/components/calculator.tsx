@@ -118,6 +118,22 @@ export function Calculator({ showToast }: CalculatorProps) {
       <h2 className="text-xl font-bold text-center">Steel Calculator</h2>
 
       <div className="space-y-2">
+        <Label htmlFor="calculation-type">What do you want to calculate?</Label>
+        <Select
+          onValueChange={handleCalculationTypeChange}
+          defaultValue="weight"
+        >
+          <SelectTrigger id="calculation-type" className="w-full">
+            <SelectValue placeholder="Select calculation type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="weight">Weight</SelectItem>
+            <SelectItem value="length">Length</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="section-type">Section Type</Label>
         <Select onValueChange={handleSectionTypeChange} defaultValue="flat">
           <SelectTrigger id="section-type" className="w-full">
@@ -165,22 +181,6 @@ export function Calculator({ showToast }: CalculatorProps) {
           />
         </div>
       )}
-
-      <div className="space-y-2">
-        <Label htmlFor="calculation-type">What do you want to calculate?</Label>
-        <Select
-          onValueChange={handleCalculationTypeChange}
-          defaultValue="weight"
-        >
-          <SelectTrigger id="calculation-type" className="w-full">
-            <SelectValue placeholder="Select calculation type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="weight">Weight</SelectItem>
-            <SelectItem value="length">Length</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
 
       {calculationType === "weight" ? (
         <div className="space-y-2">
